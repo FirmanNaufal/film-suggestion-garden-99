@@ -6,7 +6,7 @@ import { useToast } from '@/hooks/use-toast';
 import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { searchMovies, getMovieDetails, getGenres, type Movie } from '@/services/tmdb';
+import { searchMovies, getGenres, type Movie } from '@/services/tmdb';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 
 const Recommendations = () => {
@@ -100,11 +100,11 @@ const Recommendations = () => {
                     id="genre"
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
-                    className="w-full bg-white/10 border-white/20 text-white rounded-md px-3 py-2"
+                    className="w-full bg-[#2A2D3E] border-white/20 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary/20 focus:border-transparent"
                   >
-                    <option value="">All Genres</option>
+                    <option value="" className="bg-[#2A2D3E] text-white">All Genres</option>
                     {genres?.map((g: any) => (
-                      <option key={g.id} value={g.id}>
+                      <option key={g.id} value={g.id} className="bg-[#2A2D3E] text-white">
                         {g.name}
                       </option>
                     ))}
