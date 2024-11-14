@@ -80,9 +80,9 @@ const Recommendations = () => {
           <CardContent className="p-6">
             <h2 className="text-2xl font-semibold mb-6 text-white">Find Your Next Movie</h2>
             <form onSubmit={handleSearch} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <Label htmlFor="title" className="text-white">Movie Title (Optional)</Label>
+                  <Label htmlFor="title" className="text-white">Movie Title</Label>
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-white/50" />
                     <Input
@@ -95,12 +95,12 @@ const Recommendations = () => {
                   </div>
                 </div>
                 <div>
-                  <Label htmlFor="genre" className="text-white">Genre</Label>
+                  <Label htmlFor="genre" className="text-white mb-1 block">Genre</Label> 
                   <select
                     id="genre"
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
-                    className="bg-[#2A2D3E] border border-white/20 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary/20 transition-all duration-300"
+                    className="bg-[#2A2D3E] border border-white/20 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary/20 transition-all duration-300 w-full"
                   >
                     <option value="" className="bg-[#2A2D3E] text-white">All Genres</option>
                     {genres?.map((g: any) => (
@@ -110,8 +110,9 @@ const Recommendations = () => {
                     ))}
                   </select>
                 </div>
+
                 <div>
-                  <Label htmlFor="year" className="text-white">Release Year (Optional)</Label>
+                  <Label htmlFor="year" className="text-white">Release Year</Label>
                   <Input
                     id="year"
                     value={year}
@@ -134,8 +135,8 @@ const Recommendations = () => {
                     <option value="title" className="bg-[#2A2D3E] text-white">Title</option>
                   </select>
                 </div>
-                <button 
-                  type="submit" 
+                <button
+                  type="submit"
                   disabled={isLoading}
                   className="button-primary bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
                 >
