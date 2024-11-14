@@ -206,7 +206,7 @@ const Recommendations = () => {
               </div>
             ))}
           </div>
-        ) : searchTerm && !isLoading ? (
+        ) : searchParams.title && !isLoading ? (
           <div className="mt-12 text-center text-white">
             <p>No movies found matching your criteria.</p>
           </div>
