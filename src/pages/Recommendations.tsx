@@ -100,7 +100,7 @@ const Recommendations = () => {
                     id="genre"
                     value={genre}
                     onChange={(e) => setGenre(e.target.value)}
-                    className="w-full bg-[#2A2D3E] border-white/20 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary/20 focus:border-transparent"
+                    className="bg-[#2A2D3E] border border-white/20 text-white rounded-md px-3 py-2 focus:ring-2 focus:ring-primary/20 transition-all duration-300"
                   >
                     <option value="" className="bg-[#2A2D3E] text-white">All Genres</option>
                     {genres?.map((g: any) => (
@@ -127,11 +127,11 @@ const Recommendations = () => {
                   <select
                     value={sortBy}
                     onChange={(e) => setSortBy(e.target.value)}
-                    className="bg-white/10 border border-white/20 rounded-md px-3 py-1 text-white"
+                    className="bg-[#2A2D3E] border border-white/20 rounded-md px-3 py-1 text-white focus:outline-none focus:ring-2 focus:ring-primary/20 transition-all duration-300"
                   >
-                    <option value="rating">Rating</option>
-                    <option value="year">Year</option>
-                    <option value="title">Title</option>
+                    <option value="rating" className="bg-[#2A2D3E] text-white">Rating</option>
+                    <option value="year" className="bg-[#2A2D3E] text-white">Year</option>
+                    <option value="title" className="bg-[#2A2D3E] text-white">Title</option>
                   </select>
                 </div>
                 <button 
