@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Film, LogOut } from 'lucide-react';
+import { Film, LogOut, Star, Tv, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -29,17 +30,17 @@ const Home = () => {
   };
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-[#1A1F2C] to-[#2C1A2F]">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-lg border-b border-gray-200 z-50">
+      <nav className="fixed top-0 w-full bg-black/10 backdrop-blur-lg border-b border-white/10 z-50">
         <div className="container mx-auto px-4 h-16 flex items-center justify-between">
           <div className="flex items-center space-x-2">
-            <Film className="w-6 h-6 text-primary" />
-            <span className="text-xl font-semibold">MovieMind</span>
+            <Film className="w-6 h-6 text-primary animate-pulse" />
+            <span className="text-xl font-semibold text-white">MovieMind</span>
           </div>
           <button
             onClick={handleLogout}
-            className="flex items-center space-x-2 nav-link"
+            className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors"
           >
             <LogOut className="w-5 h-5" />
             <span>Logout</span>
@@ -50,16 +51,16 @@ const Home = () => {
       {/* Hero Section */}
       <main className="pt-32 pb-20 px-4">
         <div className="container mx-auto text-center animate-fade-in">
-          <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
             Discover Your Next Favorite Movie
           </h1>
-          <p className="text-xl text-muted mb-12 max-w-2xl mx-auto">
+          <p className="text-xl text-white/80 mb-12 max-w-2xl mx-auto">
             Get personalized movie recommendations based on your preferences and taste.
           </p>
           <button
             onClick={handleGetRecommendations}
             disabled={isLoading}
-            className="button-primary"
+            className="button-primary text-lg px-8 py-4 bg-gradient-to-r from-primary to-purple-600 hover:from-primary/90 hover:to-purple-600/90"
           >
             {isLoading ? "Loading..." : "Get Movie Recommendations"}
           </button>
@@ -67,23 +68,50 @@ const Home = () => {
 
         {/* Featured Movies */}
         <div className="mt-24">
-          <h2 className="text-2xl font-semibold mb-8 text-center">Featured Movies</h2>
+          <h2 className="text-3xl font-semibold mb-8 text-center text-white">Featured Movies</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredMovies.map((movie) => (
-              <div key={movie.id} className="movie-card">
-                <img
-                  src={movie.poster}
-                  alt={movie.title}
-                  className="w-full h-[400px] object-cover"
-                />
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold mb-2">{movie.title}</h3>
-                  <div className="flex items-center justify-between text-sm text-muted">
-                    <span>IMDb {movie.rating}</span>
-                    <span>{movie.year}</span>
+              <HoverCard key={movie.id}>
+                <HoverCardTrigger>
+                  <div className="movie-card group transform transition-all duration-300 hover:scale-[1.02]">
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img
+                        src={movie.poster}
+                        alt={movie.title}
+                        className="w-full h-[400px] object-cover transition-transform duration-300 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                        <div className="text-white">
+                          <div className="flex items-center space-x-2 mb-2">
+                            <Star className="w-5 h-5 text-yellow-400" fill="currentColor" />
+                            <span>{movie.rating}</span>
+                          </div>
+                          <p className="text-sm opacity-90">{movie.description}</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="p-6 bg-white/10 backdrop-blur-lg">
+                      <h3 className="text-xl font-semibold mb-2 text-white">{movie.title}</h3>
+                      <div className="flex items-center justify-between text-sm text-white/70">
+                        <div className="flex items-center space-x-2">
+                          <Award className="w-4 h-4" />
+                          <span>{movie.awards}</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Tv className="w-4 h-4" />
+                          <span>{movie.streaming}</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
+                </HoverCardTrigger>
+                <HoverCardContent className="w-80">
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-semibold">{movie.title} - Behind the Scenes</h4>
+                    <p className="text-sm text-muted-foreground">{movie.trivia}</p>
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             ))}
           </div>
         </div>
@@ -98,21 +126,33 @@ const featuredMovies = [
     title: "Inception",
     rating: "8.8",
     year: "2010",
-    poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg"
+    poster: "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+    description: "A thief who steals corporate secrets through dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.",
+    awards: "4 Oscars",
+    streaming: "Netflix",
+    trivia: "The spinning top at the end of the movie was actually CGI, not a practical prop."
   },
   {
     id: 2,
     title: "The Dark Knight",
     rating: "9.0",
     year: "2008",
-    poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg"
+    poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    description: "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.",
+    awards: "2 Oscars",
+    streaming: "HBO Max",
+    trivia: "Heath Ledger locked himself in a hotel room for a month to perfect his Joker character."
   },
   {
     id: 3,
     title: "Interstellar",
     rating: "8.6",
     year: "2014",
-    poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg"
+    poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+    description: "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
+    awards: "1 Oscar",
+    streaming: "Prime Video",
+    trivia: "The film's black hole visuals helped scientists better understand actual black holes."
   }
 ];
 
