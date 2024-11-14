@@ -16,7 +16,7 @@ const Recommendations = () => {
   const [genre, setGenre] = useState('');
   const [year, setYear] = useState('');
   const [sortBy, setSortBy] = useState('rating');
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchParams, setSearchParams] = useState({ title: '', year: '', genre: '' });
 
   // Fetch genres
   const { data: genres } = useQuery({
@@ -26,14 +26,14 @@ const Recommendations = () => {
 
   // Search movies
   const { data: movies, isLoading } = useQuery({
-    queryKey: ['movies', searchTerm, year, genre],
-    queryFn: () => searchMovies(searchTerm, year, genre),
-    enabled: !!searchTerm,
+    queryKey: ['movies', searchParams],
+    queryFn: () => searchMovies(searchParams.title, searchParams.year, searchParams.genre),
+    enabled: !!(searchParams.title || searchParams.genre || searchParams.year),
   });
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
-    setSearchTerm(title);
+    setSearchParams({ title, year, genre });
     toast({
       title: "Searching movies",
       description: "Looking for movies matching your criteria...",
@@ -82,7 +82,7 @@ const Recommendations = () => {
             <form onSubmit={handleSearch} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <div>
-                  <Label htmlFor="title" className="text-white">Movie Title</Label>
+                  <Label htmlFor="title" className="text-white">Movie Title (Optional)</Label>
                   <div className="relative">
                     <Search className="absolute left-3 top-3 h-4 w-4 text-white/50" />
                     <Input
@@ -111,7 +111,7 @@ const Recommendations = () => {
                   </select>
                 </div>
                 <div>
-                  <Label htmlFor="year" className="text-white">Release Year</Label>
+                  <Label htmlFor="year" className="text-white">Release Year (Optional)</Label>
                   <Input
                     id="year"
                     value={year}

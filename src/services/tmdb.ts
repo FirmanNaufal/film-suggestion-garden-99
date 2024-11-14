@@ -22,23 +22,35 @@ export interface Movie {
   director?: string;
 }
 
-export const searchMovies = async (query: string, year?: string, genre?: string) => {
-  const params: any = {
-    query,
-    include_adult: false,
-    language: 'en-US',
-  };
+export const searchMovies = async (query?: string, year?: string, genre?: string) => {
+  // If we have a query, use search/movie endpoint
+  if (query) {
+    const params: any = {
+      query,
+      include_adult: false,
+      language: 'en-US',
+    };
 
-  if (year) {
-    params.year = year;
+    if (year) params.year = year;
+    if (genre) params.with_genres = genre;
+
+    const response = await tmdbApi.get('/search/movie', { params });
+    return response.data.results;
+  } 
+  // If no query but we have genre/year, use discover/movie endpoint
+  else {
+    const params: any = {
+      include_adult: false,
+      language: 'en-US',
+      sort_by: 'popularity.desc',
+    };
+
+    if (year) params.year = year;
+    if (genre) params.with_genres = genre;
+
+    const response = await tmdbApi.get('/discover/movie', { params });
+    return response.data.results;
   }
-
-  if (genre) {
-    params.with_genres = genre;
-  }
-
-  const response = await tmdbApi.get('/search/movie', { params });
-  return response.data.results;
 };
 
 export const getMovieDetails = async (movieId: number) => {
