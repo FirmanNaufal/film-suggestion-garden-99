@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Film, LogOut, Star, Tv, Award } from 'lucide-react';
+import { Film, LogOut, Star, Tv, Award, UserCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
+import { Button } from '@/components/ui/button';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -21,14 +22,6 @@ const Home = () => {
     }, 500);
   };
 
-  const handleLogout = () => {
-    toast({
-      title: "Logged out successfully",
-      description: "See you next time!",
-    });
-    navigate('/login');
-  };
-
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1A1F2C] to-[#2C1A2F]">
       {/* Navigation */}
@@ -38,13 +31,14 @@ const Home = () => {
             <Film className="w-6 h-6 text-primary animate-pulse" />
             <span className="text-xl font-semibold text-white">MovieMind</span>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors"
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => navigate('/profile')}
+            className="text-white/80 hover:text-white transition-colors"
           >
-            <LogOut className="w-5 h-5" />
-            <span>Logout</span>
-          </button>
+            <UserCircle className="w-6 h-6" />
+          </Button>
         </div>
       </nav>
 
