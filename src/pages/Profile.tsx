@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Mail, MapPin, Calendar, Phone, Home, LogOut, Edit2, Check, X } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useEffect, useState } from 'react';
-import { Input } from '@/components/ui/input';
+import { ProfileField } from '@/components/profile/ProfileField';
 
 interface UserData {
   username: string;
@@ -114,73 +114,41 @@ const Profile = () => {
           <CardContent className="space-y-8 p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="space-y-6">
-                <div className="flex items-center space-x-4 text-white/90 group hover:bg-white/5 p-3 rounded-lg transition-colors">
-                  <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <User className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-white/60">Username</p>
-                    <p className="font-medium">{userData.username}</p>
-                  </div>
-                </div>
+                <ProfileField
+                  icon={<User className="w-6 h-6 text-primary" />}
+                  label="Username"
+                  value={userData.username}
+                />
                 
-                <div className="flex items-center space-x-4 text-white/90 group hover:bg-white/5 p-3 rounded-lg transition-colors">
-                  <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Mail className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-white/60">Email</p>
-                    <p className="font-medium">{userData.email}</p>
-                  </div>
-                </div>
+                <ProfileField
+                  icon={<Mail className="w-6 h-6 text-primary" />}
+                  label="Email"
+                  value={userData.email}
+                />
                 
-                <div className="flex items-center space-x-4 text-white/90 group hover:bg-white/5 p-3 rounded-lg transition-colors">
-                  <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <MapPin className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-white/60">Location</p>
-                    {isEditing ? (
-                      <Input
-                        value={editedLocation}
-                        onChange={(e) => setEditedLocation(e.target.value)}
-                        className="input-field mt-1"
-                      />
-                    ) : (
-                      <p className="font-medium">{userData.location}</p>
-                    )}
-                  </div>
-                </div>
+                <ProfileField
+                  icon={<MapPin className="w-6 h-6 text-primary" />}
+                  label="Location"
+                  value={editedLocation}
+                  isEditing={isEditing}
+                  onChange={setEditedLocation}
+                />
               </div>
 
               <div className="space-y-6">
-                <div className="flex items-center space-x-4 text-white/90 group hover:bg-white/5 p-3 rounded-lg transition-colors">
-                  <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Calendar className="w-6 h-6 text-primary" />
-                  </div>
-                  <div>
-                    <p className="text-sm text-white/60">Join Date</p>
-                    <p className="font-medium">{userData.joinDate}</p>
-                  </div>
-                </div>
+                <ProfileField
+                  icon={<Calendar className="w-6 h-6 text-primary" />}
+                  label="Join Date"
+                  value={userData.joinDate}
+                />
                 
-                <div className="flex items-center space-x-4 text-white/90 group hover:bg-white/5 p-3 rounded-lg transition-colors">
-                  <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
-                    <Phone className="w-6 h-6 text-primary" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm text-white/60">Phone</p>
-                    {isEditing ? (
-                      <Input
-                        value={editedPhone}
-                        onChange={(e) => setEditedPhone(e.target.value)}
-                        className="input-field mt-1"
-                      />
-                    ) : (
-                      <p className="font-medium">{userData.phone}</p>
-                    )}
-                  </div>
-                </div>
+                <ProfileField
+                  icon={<Phone className="w-6 h-6 text-primary" />}
+                  label="Phone"
+                  value={editedPhone}
+                  isEditing={isEditing}
+                  onChange={setEditedPhone}
+                />
               </div>
             </div>
 
