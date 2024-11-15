@@ -2,19 +2,39 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Film } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const Register = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    email: '',
+    password: '',
+    location: '',
+    phone: '',
+  });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate registration
+    // Simulate registration with the additional fields
     setTimeout(() => {
       setIsLoading(false);
+      // Store user data in localStorage for demo purposes
+      localStorage.setItem('userData', JSON.stringify({
+        ...formData,
+        joinDate: new Date().toLocaleDateString(),
+      }));
+      
       toast({
         title: "Registration successful!",
         description: "Welcome to MovieMind.",
@@ -31,33 +51,68 @@ const Register = () => {
           <h1 className="text-2xl font-bold">MovieMind</h1>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium mb-2">Username</label>
-            <input
+            <Label htmlFor="username">Username</Label>
+            <Input
+              id="username"
+              name="username"
               type="text"
-              className="input-field"
               placeholder="Choose a username"
+              value={formData.username}
+              onChange={handleChange}
               required
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2">Email</label>
-            <input
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              name="email"
               type="email"
-              className="input-field"
               placeholder="Enter your email"
+              value={formData.email}
+              onChange={handleChange}
               required
             />
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-2">Password</label>
-            <input
+            <Label htmlFor="password">Password</Label>
+            <Input
+              id="password"
+              name="password"
               type="password"
-              className="input-field"
               placeholder="Choose a password"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              name="location"
+              type="text"
+              placeholder="Enter your location"
+              value={formData.location}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="phone">Phone Number</Label>
+            <Input
+              id="phone"
+              name="phone"
+              type="tel"
+              placeholder="Enter your phone number"
+              value={formData.phone}
+              onChange={handleChange}
               required
             />
           </div>
@@ -65,7 +120,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="button-primary w-full"
+            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md transition-colors disabled:opacity-50"
           >
             {isLoading ? "Creating account..." : "Create Account"}
           </button>
