@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Film, LogOut, Star, Tv, Award } from 'lucide-react';
+import { Film, LogOut, Star, Tv, Award, UserCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { HoverCard, HoverCardTrigger, HoverCardContent } from '@/components/ui/hover-card';
 import Profile from '@/components/Profile';
@@ -9,6 +9,7 @@ const Home = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [isLoading, setIsLoading] = useState(false);
+  const [showProfile, setShowProfile] = useState(false);
 
   const handleGetRecommendations = () => {
     setIsLoading(true);
@@ -30,6 +31,10 @@ const Home = () => {
     navigate('/login');
   };
 
+  const toggleProfile = () => {
+    setShowProfile(!showProfile);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1A1F2C] to-[#2C1A2F]">
       {/* Navigation */}
@@ -39,13 +44,22 @@ const Home = () => {
             <Film className="w-6 h-6 text-primary animate-pulse" />
             <span className="text-xl font-semibold text-white">MovieMind</span>
           </div>
-          <button
-            onClick={handleLogout}
-            className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Logout</span>
-          </button>
+          <div className="flex items-center space-x-4">
+            <button
+              onClick={toggleProfile}
+              className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors p-2 rounded-full hover:bg-white/10"
+              title="View Profile"
+            >
+              <UserCircle className="w-6 h-6" />
+            </button>
+            <button
+              onClick={handleLogout}
+              className="flex items-center space-x-2 text-white/80 hover:text-white transition-colors"
+            >
+              <LogOut className="w-5 h-5" />
+              <span>Logout</span>
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -53,12 +67,12 @@ const Home = () => {
       <main className="container mx-auto pt-32 pb-20 px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           {/* Profile Section */}
-          <div className="lg:col-span-1">
+          <div className={`lg:col-span-1 ${showProfile ? 'block' : 'hidden'} lg:block`}>
             <Profile />
           </div>
 
           {/* Movie Content */}
-          <div className="lg:col-span-2">
+          <div className={`${showProfile ? 'lg:col-span-2' : 'lg:col-span-3'}`}>
             <div className="text-center mb-12 animate-fade-in">
               <h1 className="text-4xl lg:text-6xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-primary to-purple-600">
                 Discover Your Next Favorite Movie
