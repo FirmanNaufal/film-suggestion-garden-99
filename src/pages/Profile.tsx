@@ -2,9 +2,10 @@ import { useNavigate } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { User, Mail, MapPin, Calendar, Phone, Home, LogOut } from 'lucide-react';
+import { User, Mail, MapPin, Calendar, Phone, Home, LogOut, Edit2, Check, X } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { useEffect, useState } from 'react';
+import { Input } from '@/components/ui/input';
 
 interface UserData {
   username: string;
@@ -18,11 +19,17 @@ const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedLocation, setEditedLocation] = useState('');
+  const [editedPhone, setEditedPhone] = useState('');
 
   useEffect(() => {
     const storedData = localStorage.getItem('userData');
     if (storedData) {
-      setUserData(JSON.parse(storedData));
+      const parsedData = JSON.parse(storedData);
+      setUserData(parsedData);
+      setEditedLocation(parsedData.location);
+      setEditedPhone(parsedData.phone);
     }
   }, []);
 
@@ -37,6 +44,31 @@ const Profile = () => {
 
   const handleBackHome = () => {
     navigate('/');
+  };
+
+  const handleSaveChanges = () => {
+    if (userData) {
+      const updatedUserData = {
+        ...userData,
+        location: editedLocation,
+        phone: editedPhone,
+      };
+      localStorage.setItem('userData', JSON.stringify(updatedUserData));
+      setUserData(updatedUserData);
+      setIsEditing(false);
+      toast({
+        title: "Profile updated",
+        description: "Your changes have been saved successfully.",
+      });
+    }
+  };
+
+  const handleCancelEdit = () => {
+    if (userData) {
+      setEditedLocation(userData.location);
+      setEditedPhone(userData.phone);
+      setIsEditing(false);
+    }
   };
 
   if (!userData) {
@@ -63,6 +95,15 @@ const Profile = () => {
           <CardHeader className="space-y-4">
             <div className="flex items-center justify-between">
               <CardTitle className="text-3xl font-bold text-white">My Profile</CardTitle>
+              {!isEditing && (
+                <Button
+                  variant="ghost"
+                  onClick={() => setIsEditing(true)}
+                  className="text-white hover:text-primary hover:bg-white/10"
+                >
+                  <Edit2 className="h-5 w-5" />
+                </Button>
+              )}
               <div className="h-20 w-20 rounded-full bg-gradient-to-br from-primary to-purple-600 flex items-center justify-center">
                 <User className="h-10 w-10 text-white" />
               </div>
@@ -97,9 +138,17 @@ const Profile = () => {
                   <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
                     <MapPin className="w-6 h-6 text-primary" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <p className="text-sm text-white/60">Location</p>
-                    <p className="font-medium">{userData.location}</p>
+                    {isEditing ? (
+                      <Input
+                        value={editedLocation}
+                        onChange={(e) => setEditedLocation(e.target.value)}
+                        className="input-field mt-1"
+                      />
+                    ) : (
+                      <p className="font-medium">{userData.location}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -119,9 +168,17 @@ const Profile = () => {
                   <div className="p-3 rounded-full bg-primary/10 group-hover:bg-primary/20 transition-colors">
                     <Phone className="w-6 h-6 text-primary" />
                   </div>
-                  <div>
+                  <div className="flex-1">
                     <p className="text-sm text-white/60">Phone</p>
-                    <p className="font-medium">{userData.phone}</p>
+                    {isEditing ? (
+                      <Input
+                        value={editedPhone}
+                        onChange={(e) => setEditedPhone(e.target.value)}
+                        className="input-field mt-1"
+                      />
+                    ) : (
+                      <p className="font-medium">{userData.phone}</p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -129,14 +186,34 @@ const Profile = () => {
 
             <Separator className="bg-white/20" />
 
-            <Button
-              onClick={handleLogout}
-              variant="destructive"
-              className="w-full mt-8 py-6 text-lg font-medium"
-            >
-              <LogOut className="mr-2 h-5 w-5" />
-              Logout
-            </Button>
+            {isEditing ? (
+              <div className="flex space-x-4">
+                <Button
+                  onClick={handleSaveChanges}
+                  className="flex-1 py-6 text-lg font-medium"
+                >
+                  <Check className="mr-2 h-5 w-5" />
+                  Save Changes
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={handleCancelEdit}
+                  className="flex-1 py-6 text-lg font-medium"
+                >
+                  <X className="mr-2 h-5 w-5" />
+                  Cancel
+                </Button>
+              </div>
+            ) : (
+              <Button
+                onClick={handleLogout}
+                variant="destructive"
+                className="w-full mt-8 py-6 text-lg font-medium"
+              >
+                <LogOut className="mr-2 h-5 w-5" />
+                Logout
+              </Button>
+            )}
           </CardContent>
         </Card>
       </div>
