@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Film } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -53,11 +51,11 @@ const Register = () => {
         
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="username">Username</Label>
-            <Input
-              id="username"
+            <label className="block text-sm font-medium mb-2">Username</label>
+            <input
               name="username"
               type="text"
+              className="input-field"
               placeholder="Choose a username"
               value={formData.username}
               onChange={handleChange}
@@ -66,11 +64,11 @@ const Register = () => {
           </div>
           
           <div>
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
+            <label className="block text-sm font-medium mb-2">Email</label>
+            <input
               name="email"
               type="email"
+              className="input-field"
               placeholder="Enter your email"
               value={formData.email}
               onChange={handleChange}
@@ -79,11 +77,11 @@ const Register = () => {
           </div>
           
           <div>
-            <Label htmlFor="password">Password</Label>
-            <Input
-              id="password"
+            <label className="block text-sm font-medium mb-2">Password</label>
+            <input
               name="password"
               type="password"
+              className="input-field"
               placeholder="Choose a password"
               value={formData.password}
               onChange={handleChange}
@@ -92,11 +90,11 @@ const Register = () => {
           </div>
 
           <div>
-            <Label htmlFor="location">Location</Label>
-            <Input
-              id="location"
+            <label className="block text-sm font-medium mb-2">Location</label>
+            <input
               name="location"
               type="text"
+              className="input-field"
               placeholder="Enter your location"
               value={formData.location}
               onChange={handleChange}
@@ -105,11 +103,11 @@ const Register = () => {
           </div>
 
           <div>
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input
-              id="phone"
+            <label className="block text-sm font-medium mb-2">Phone Number</label>
+            <input
               name="phone"
               type="tel"
+              className="input-field"
               placeholder="Enter your phone number"
               value={formData.phone}
               onChange={handleChange}
@@ -120,7 +118,7 @@ const Register = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded-md transition-colors disabled:opacity-50"
+            className="button-primary w-full"
           >
             {isLoading ? "Creating account..." : "Create Account"}
           </button>
