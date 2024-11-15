@@ -4,12 +4,30 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { User, Mail, MapPin, Calendar, Phone, Home, LogOut } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
+import { useEffect, useState } from 'react';
+
+interface UserData {
+  username: string;
+  email: string;
+  location: string;
+  phone: string;
+  joinDate: string;
+}
 
 const Profile = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const [userData, setUserData] = useState<UserData | null>(null);
+
+  useEffect(() => {
+    const storedData = localStorage.getItem('userData');
+    if (storedData) {
+      setUserData(JSON.parse(storedData));
+    }
+  }, []);
 
   const handleLogout = () => {
+    localStorage.removeItem('userData');
     toast({
       title: "Logged out successfully",
       description: "See you next time!",
@@ -20,6 +38,14 @@ const Profile = () => {
   const handleBackHome = () => {
     navigate('/');
   };
+
+  if (!userData) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p>No user data found. Please register or login.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#1A1F2C] to-[#2C1A2F] p-4">
@@ -53,7 +79,7 @@ const Profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-white/60">Username</p>
-                    <p className="font-medium">JohnDoe123</p>
+                    <p className="font-medium">{userData.username}</p>
                   </div>
                 </div>
                 
@@ -63,7 +89,7 @@ const Profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-white/60">Email</p>
-                    <p className="font-medium">john.doe@example.com</p>
+                    <p className="font-medium">{userData.email}</p>
                   </div>
                 </div>
                 
@@ -73,7 +99,7 @@ const Profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-white/60">Location</p>
-                    <p className="font-medium">New York, USA</p>
+                    <p className="font-medium">{userData.location}</p>
                   </div>
                 </div>
               </div>
@@ -85,7 +111,7 @@ const Profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-white/60">Join Date</p>
-                    <p className="font-medium">January 1, 2024</p>
+                    <p className="font-medium">{userData.joinDate}</p>
                   </div>
                 </div>
                 
@@ -95,7 +121,7 @@ const Profile = () => {
                   </div>
                   <div>
                     <p className="text-sm text-white/60">Phone</p>
-                    <p className="font-medium">+1 234 567 8900</p>
+                    <p className="font-medium">{userData.phone}</p>
                   </div>
                 </div>
               </div>

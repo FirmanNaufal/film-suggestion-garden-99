@@ -24,15 +24,15 @@ const Register = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate registration with the additional fields
+    // Store user data in localStorage
+    const userData = {
+      ...formData,
+      joinDate: new Date().toLocaleDateString(),
+    };
+    localStorage.setItem('userData', JSON.stringify(userData));
+    
     setTimeout(() => {
       setIsLoading(false);
-      // Store user data in localStorage for demo purposes
-      localStorage.setItem('userData', JSON.stringify({
-        ...formData,
-        joinDate: new Date().toLocaleDateString(),
-      }));
-      
       toast({
         title: "Registration successful!",
         description: "Welcome to MovieMind.",
