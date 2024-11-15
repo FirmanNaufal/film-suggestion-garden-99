@@ -17,10 +17,10 @@ export const ProfileField = ({ icon, label, value, isEditing, onChange }: Profil
       <div className="flex-1">
         <p className="text-sm text-white/60">{label}</p>
         {isEditing && onChange ? (
-          <Input
+          <input
             value={value}
             onChange={(e) => onChange(e.target.value)}
-            className="mt-1 bg-white/10 border-white/20 text-white placeholder:text-white/50"
+            className="input-field mt-1"
           />
         ) : (
           <p className="font-medium">{value}</p>
